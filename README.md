@@ -85,8 +85,7 @@ A starter Blueprint file is included at [render.yaml](/F:/debugfold/render.yaml)
 2. In Render, create a Blueprint or Web Service from the repo.
 3. Use the `backend` root directory.
 4. Confirm the build command is `npm install` and the start command is `npm start`.
-5. Set these environment variables:
-   `FRONTEND_URLS`, `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`, `MONGODB_URI`, and optionally `OPENAI_API_KEY`.
+5. Set these environment variables: `FRONTEND_URLS`, `MONGODB_URI`, and either `MYSQL_URL` or the separate MySQL fields `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DATABASE`. If your provider requires TLS, also set `MYSQL_SSL=true`. Optionally add `OPENAI_API_KEY`.
 6. After Vercel gives you the frontend URL, place it in `FRONTEND_URLS`.
 
 Notes:

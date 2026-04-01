@@ -2,8 +2,22 @@ const mysql = require("mysql2/promise");
 
 let pool;
 
-async function initializeMysql() {
-  pool = mysql.createPool({
+function buildMysqlConfig() {
+  if (process.env.MYSQL_URL) {
+    const config = {
+      uri: process.env.MYSQL_URL,
+      waitForConnections: true,
+      connectionLimit: 10
+    };
+
+    if (process.env.MYSQL_SSL === "true") {
+      config.ssl = { rejectUnauthorized: false };
+    }
+
+    return config;
+  }
+
+  const config = {
     host: process.env.MYSQL_HOST || "localhost",
     port: Number(process.env.MYSQL_PORT || 3306),
     user: process.env.MYSQL_USER || "root",
@@ -11,7 +25,17 @@ async function initializeMysql() {
     database: process.env.MYSQL_DATABASE || "caresync",
     waitForConnections: true,
     connectionLimit: 10
-  });
+  };
+
+  if (process.env.MYSQL_SSL === "true") {
+    config.ssl = { rejectUnauthorized: false };
+  }
+
+  return config;
+}
+
+async function initializeMysql() {
+  pool = mysql.createPool(buildMysqlConfig());
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS users (
@@ -93,4 +117,7 @@ function getMysql() {
   return pool;
 }
 
-module.exports = { getMysql, initializeMysql };
+module.exports = {
+  getMysql,
+  initializeMysql
+};
